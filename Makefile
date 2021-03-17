@@ -15,10 +15,11 @@ HPATH = inc/
 OPATH = obj/
 
 OBJS = \
+       loader.o\
        Blaster_start.o \
+       Main_Blaster.o\
+       Blaster_end.o\
        Blaster.o \
-       rc4.o\
-       Blaster_end.o
 
 ALL_OBJS = $(addprefix $(OPATH), $(OBJS))
 
