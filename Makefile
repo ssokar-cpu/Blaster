@@ -18,6 +18,7 @@ OBJS = \
        loader.o\
        Blaster_start.o \
        Main_Blaster.o\
+       __Syscall.o\
        Blaster_end.o\
        Blaster.o \
 
