@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/time.h>
+#include <sys/mman.h>
 
 #define __NR_gettimeofday	0x4E
 
@@ -18,7 +19,8 @@ typedef struct	s_header
 void	Blaster_start( void );
 void	Main_Blaster( void );
 
-int __Syscall( int num_syscall, struct timeval *tv, struct timezone *tz);
+//int 	__Syscall( int num_syscall, struct timeval *tv, struct timezone *tz);
+int 	__Syscall( int num_syscall, long, long );
 
 /* -- Loader -- */
 /* -- For Encrypt -- */

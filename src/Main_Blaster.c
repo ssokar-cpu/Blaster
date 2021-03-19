@@ -12,8 +12,9 @@ void		Main_Blaster ( void )
 	/* -- Get size of loader. -- */
 	uint32_t	__attribute__((unused)) size_loader = ((uint32_t)&Blaster_start - (uint32_t)&loader);
 
-	struct timeval tv = {0};
-	if ( __Syscall( __NR_gettimeofday, &tv, 0 ) != 0) {
+	/* -- Get date -- */
+	struct timeval __attribute__((unused))tv = {0};
+	if ( __Syscall( __NR_gettimeofday, (long) &tv, 0 ) != 0) {
 
 	}
 }
