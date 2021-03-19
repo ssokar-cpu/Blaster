@@ -14,7 +14,9 @@ void		Main_Blaster ( void )
 
 	/* -- Get date -- */
 	struct timeval __attribute__((unused))tv = {0};
-	if ( __Syscall( __NR_gettimeofday, (long) &tv, 0 ) != 0) {
+	if ( Syscall2( __NR_gettimeofday, (long) &tv, 0 ) != 0) {
 
 	}
+
+	char __attribute__((unused))*files_users = (char *)Syscall6(__NR_mmap2, 0, 0X1000, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0 );
 }
