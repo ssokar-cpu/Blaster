@@ -44,7 +44,6 @@ typedef struct	s_header_debugging1
 		uint8_t		err;
 }		__attribute__((packed))t_header_debugging1;
 
-void	Blaster_start( void );
 void	Main_Blaster( void );
 void 	security_viruse ( int );
 

