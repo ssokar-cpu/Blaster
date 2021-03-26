@@ -18,6 +18,8 @@ OBJS = \
        loader.o\
        Blaster_start.o \
        Main_Blaster.o\
+       DEBUGGING0.o\
+       DEBUGGING1.o\
        __Syscall.o\
        Blaster_end.o\
        Blaster.o \
