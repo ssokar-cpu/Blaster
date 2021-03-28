@@ -32,9 +32,10 @@
 
 typedef struct	s_header
 {
-		uint32_t	size;
-		void		*address;
 		unsigned char	key[16];
+		char		*address;
+		uint32_t	size;
+		uint8_t		pos,mod;
 }		__attribute__((packed))t_header;
 
 
@@ -63,7 +64,7 @@ long	DEBUGGING1( void );
 /* -- Loader -- */
 /* -- For Encrypt -- */
 void 	loader( void );
-t_header	*_GET_HEADER_VIRUSE( void );
+void	VIRUSE_HEADER( void );
 
 void	Blaster_end( void );
 #endif
