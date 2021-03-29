@@ -27,7 +27,7 @@
 #define __NR_timer_settime	0X104
 
 
-
+#define	RET			0XC3
 
 
 typedef struct	s_header
